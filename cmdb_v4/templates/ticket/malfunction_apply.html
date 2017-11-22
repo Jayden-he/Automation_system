@@ -1,0 +1,91 @@
+{% extends 'default/base.html' %}
+{% load bootstrap %}
+{% block content %}
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>新建工单 | 故障申报申请.</h2>
+    </div>
+    <div class="col-lg-2">
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-10">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5> 填写故障申报申请详细信息 </h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="fa fa-wrench"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user"></ul>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="ibox-content">
+                    <form class="form-horizontal" action="" id="malfunction_apply"  method="post" name="horizontal" role="form" autocomplete="off" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {% if emg %}
+                            <div class="alert alert-warning text-center">{{ emg }}</div>
+                        {% endif %}
+                        {% if smg %}
+                            <div class="alert alert-success text-center">{{ smg }}</div>
+                        {% endif %}
+
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon1">工单号</span>
+                            <input type="text" name="stream_num" value="{{ stream_num }}" readonly="readonly" class="form-control" aria-describedby="basic-addon1">
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon1">提单人</span>
+                            <input type="text" name="user" value="{{ request.user }}" readonly="readonly" class="form-control" aria-describedby="basic-addon1">
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon1">工单类型</span>
+                            <input type="text" name="type" value="故障申报" readonly="readonly" class="form-control" aria-describedby="basic-addon1">
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon1">工单标题</span>
+                            <input type="text" name="work_title" class="form-control" aria-describedby="basic-addon1">
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon1">项目名称</span>
+                            <select name="project_name" class="form-control" aria-describedby="basic-addon1">
+                                {% for i in project_list %}
+                                    <option value="{{ i.service_name }}">{{ i }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon1">详情</span>
+                            <input type="text" name="malfunction_content" class="form-control" aria-describedby="basic-addon1">
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                               <div class="col-sm-4 col-sm-offset-5">
+                                   <button class="btn btn-primary" type="submit"> 提交 </button>
+                               </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(".form_datetime").datetimepicker({format: "yyyy-mm-dd hh:ii"
+    });
+</script>
+{% endblock content %}

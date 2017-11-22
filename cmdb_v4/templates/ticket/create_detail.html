@@ -1,0 +1,147 @@
+{% extends 'default/base.html' %}
+{% load bootstrap %}
+{% block content %}
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                        <h3>详细信息</h3>
+                </div>
+                    <div class="ibox-content">
+                        <form id="opinion" class="form-horizontal" method="post" name="horizontal" role="form" autocomplete="off">
+                            {% csrf_token %}
+                            <div>
+                                {% if i.type = '版本发布' %}
+                                    <table class="table table-bordered">
+                                        <tr>
+                                            <td colspan="2"><b>工单编号:</b>&nbsp&nbsp&nbsp&nbsp{{ i.stream_num }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"><b>工单标题:</b>&nbsp&nbsp&nbsp&nbsp{{ i.work_title }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>项目名称:</b>&nbsp&nbsp&nbsp&nbsp{{ i.project_name }}</td>
+                                            <td><b>版本号:</b>&nbsp&nbsp&nbsp&nbsp{{ i.version }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>版本路径:</b>&nbsp&nbsp&nbsp&nbsp{{ i.version_path }}</td>
+                                            <td><b>上线时间:</b>&nbsp&nbsp&nbsp&nbsp{{ i.online_date }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>脚本路径:</b>&nbsp&nbsp&nbsp&nbsp{{ i.script_path }}</td>
+                                            <td><b>测试报告:</b>&nbsp&nbsp&nbsp&nbsp
+                                                {% if i.test_report %}
+                                                    <a href="/ticket/downloadfile/?url={{ i.test_report }}">点击下载</a>
+                                                {% else %}
+                                                    没有测试报告
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>工单类型:</b>&nbsp&nbsp&nbsp&nbsp{{ i.type }}</td>
+                                            <td><b>提单人:</b>&nbsp&nbsp&nbsp&nbsp{{ i.user }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>创建时间:</b>&nbsp&nbsp&nbsp&nbsp{{ i.create_time }}</td>
+                                            <td><b>审批状态:</b>&nbsp&nbsp&nbsp&nbsp
+                                            {% if i.initial_state = 0 %}
+                                                审批中
+                                            {% else %}
+                                                审批完成
+                                            {% endif %}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"><b>详情:</b>&nbsp&nbsp&nbsp&nbsp{{ i.version_update_content }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"><b>审批意见:</b>&nbsp&nbsp&nbsp&nbsp{{ i.opinion }}</td>
+                                        </tr>
+                                    </table>
+                                {% elif i.type = '故障申报' %}
+                                    <table class="table table-bordered">
+                                        <tr>
+                                            <td colspan="2"><b>工单编号:</b>&nbsp&nbsp&nbsp&nbsp{{ i.stream_num }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"><b>工单标题:</b>&nbsp&nbsp&nbsp&nbsp{{ i.work_title }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>项目名称:</b>&nbsp&nbsp&nbsp&nbsp{{ i.project_name }}</td>
+                                            <td><b>工单类型:</b>&nbsp&nbsp&nbsp&nbsp{{ i.type }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>提单人:</b>&nbsp&nbsp&nbsp&nbsp{{ i.user }}</td>
+                                            <td><b>审批状态:</b>&nbsp&nbsp&nbsp&nbsp
+                                                {% if i.initial_state = 0 %}
+                                                    审批中
+                                                {% else %}
+                                                    审批完成
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"><b>创建时间:</b>&nbsp&nbsp&nbsp&nbsp{{ i.create_time }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"><b>详情:</b>&nbsp&nbsp&nbsp&nbsp{{ i.version_update_content }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"><b>审批意见:</b>&nbsp&nbsp&nbsp&nbsp{{ i.opinion }}</td>
+                                        </tr>
+                                    </table>
+                                {% else %}
+                                    <table class="table table-bordered">
+                                        <tr>
+                                            <td colspan="2"><b>工单编号:</b>&nbsp&nbsp&nbsp&nbsp{{ i.stream_num }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"><b>工单标题:</b>&nbsp&nbsp&nbsp&nbsp{{ i.work_title }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>项目名称:</b>&nbsp&nbsp&nbsp&nbsp{{ i.project_name }}</td>
+                                            <td><b>版本号:</b>&nbsp&nbsp&nbsp&nbsp{{ i.version }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>上线时间:</b>&nbsp&nbsp&nbsp&nbsp{{ i.online_date }}</td>
+                                            <td><b>工单类型:</b>&nbsp&nbsp&nbsp&nbsp{{ i.type }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>提单人:</b>&nbsp&nbsp&nbsp&nbsp{{ i.user }}</td>
+                                            <td><b>创建时间:</b>&nbsp&nbsp&nbsp&nbsp{{ i.create_time }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>审批状态:</b>&nbsp&nbsp&nbsp&nbsp
+                                                {% if i.initial_state = 0 %}
+                                                    审批中
+                                                {% else %}
+                                                    审批完成
+                                                {% endif %}
+                                            </td>
+                                            <td>脚本下载
+                                                {% if i.script_path %}
+                                                    <a href="/ticket/downloadfile/?url={{ i.script_path }}">点击下载</a>
+                                                {% else %}
+                                                    没有脚本
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"><b>详情:</b>&nbsp&nbsp&nbsp&nbsp{{ i.version_update_content }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"><b>审批意见:</b>&nbsp&nbsp&nbsp&nbsp{{ i.opinion }}</td>
+                                        </tr>
+                                    </table>
+                                {% endif %}
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

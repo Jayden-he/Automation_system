@@ -1,0 +1,54 @@
+{% extends 'default/base.html' %}
+{% load bootstrap %}
+{% block content %}
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="ibox float-e-margins">
+            <div id="create_group">
+                <div class="ibox-title">
+                    <h5>组内删除用户</h5>
+                </div>
+                {% if emg %}
+                    <div class="alert alert-warning text-center">{{ emg }}</div>
+                {% endif %}
+                {% if smg %}
+                    <div class="alert alert-success text-center">{{ smg }}</div>
+                {% endif %}
+                <div class="ibox-content">
+                    <div>
+                        <form id="create_group_form" class="m-t" role="form" method="post" action="">
+                            {% csrf_token %}
+                            <div class="input-group">
+                                <p><label>组名:</label>
+                                    <select name="group_name" class="form-control" aria-describedby="basic-addon1">
+                                        {% for i in group_list %}
+                                            <option>{{ i.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </p>
+                            </div>
+                            <p><label></label></p>
+                            <table class="table">
+                                <tr>
+                                    <td>用户名</td>
+                                    <td>邮箱</td>
+                                </tr>
+                                {% for i in user_list %}
+                                    <tr>
+                                        <td>
+                                            <label><input name="get_users" type="checkbox" value="{{ i.username }}">{{ i.username }}</label>
+                                        </td>
+                                        <td>{{ i.email }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                            <button class="btn btn-large btn-primary" type="submit">确定</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

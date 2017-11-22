@@ -1,0 +1,41 @@
+{% extends 'default/base.html' %}
+{% load bootstrap %}
+{% block content %}
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="ibox float-e-margins">
+            <div id="create_group">
+                <div class="ibox-title">
+                    <h5> 新建用户组</h5>
+                </div>
+                <div class="ibox-content">
+                    <div>
+                        <form id="create_group_form" class="m-t" role="form" method="post" action="">
+                            {% csrf_token %}
+                            {% if emg %}
+                                <div class="alert alert-warning text-center">{{ emg }}</div>
+                            {% endif %}
+                            {% if smg %}
+                                <div class="alert alert-success text-center">{{ smg }}</div>
+                            {% endif %}
+                            <div class="input-group">
+                                <span class="input-group-addon" id="basic-addon1">组名</span>
+                                <input type="text" name="name" class="form-control" placeholder="group_name" aria-describedby="basic-addon1">
+                            </div>
+                            <div>
+                                <p><input type="checkbox" name="cmdb_manage" value="true" />资产管理权限</p>
+                                <p><input type="checkbox" name="role_manage" value="true" />角色管理权限</p>
+                                <p><input type="checkbox" name="user_manage" value="true" />用户管理权限</p>
+                                <p><input type="checkbox" name="ticket_manage" value="true" />工单管理权限</p>
+                            </div>
+                            <button class="btn btn-large btn-primary" type="submit">确定</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends 'default/base.html' %}
+{% load bootstrap %}
+{% block content %}
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="ibox float-e-margins">
+            <div id="basic_info">
+                <div class="ibox-title">
+                    <h5> 基本信息</h5>
+                </div>
+                <div>
+                    <div class="ibox-content">
+                        <div>
+                            <div>
+                                <p><label>用户名:&nbsp&nbsp&nbsp&nbsp</label>{{ user }}</p>
+                                <p><label>邮箱:&nbsp&nbsp&nbsp&nbsp</label>{{ email }}</p>
+                                <p><label>创建时间:&nbsp&nbsp&nbsp&nbsp</label>{{ create_time }}</p>
+                                <p><lable>所属用户组:&nbsp&nbsp&nbsp&nbsp</lable>
+                                    {% for i in group_list %}
+                                        {{ i.name }}&nbsp&nbsp
+                                    {% endfor %}
+                                </p>
+                            </div>
+                        <div>
+                    </div>
+                </div>
+                <div class="ibox-title">
+                    <h5>修改密码</h5>
+                </div>
+                    <div>
+                        <form method="post" action="">
+                            {% csrf_token %}
+                            {% if emg %}
+                                <div class="alert alert-warning text-center">{{ emg }}</div>
+                            {% endif %}
+                            {% if smg %}
+                                <div class="alert alert-success text-center">{{ smg }}</div>
+                            {% endif %}
+                            <div>
+                                <p>
+                                    <label>旧密码:&nbsp&nbsp&nbsp&nbsp</label>
+                                    <input type="password" name="oldpassword">
+                                </p>
+                                <p>
+                                    <label>新密码:&nbsp&nbsp&nbsp&nbsp</label>
+                                    <input type="password" name="newpassword">
+                                </p>
+                                <button class="btn btn-large btn-primary" type="submit">确定</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

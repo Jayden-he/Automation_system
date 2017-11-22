@@ -1,0 +1,154 @@
+<nav class="navbar-default navbar-static-side" role="navigation">
+    <div class="sidebar-collapse">
+        <ul class="nav" id="side-menu">
+            {% include 'nav_li_profile.html' %}
+            {% if perms.account.access_cmdb %}
+                <li class="assets">
+                    <a href="#"><i class="fa fa-rebel"></i> <span class="nav-label">资产管理</span><span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li class="server host_list host_add host_add_batch ip_list zabbix">
+                            <a href="#">服务器管理 <span class="fa arrow"></span></a>
+                            <ul class="nav nav-third-level">
+                                    <li class="host_list"><a href="/assets/host_list/">服务器列表</a></li>
+                                    <li class="host_add"><a href="/assets/host_add/">添加主机</a></li>
+                                    <li class="host_add_batch"><a href="/assets/host_add_batch/" >批量添加主机</a></li>
+                            </ul>
+                        </li>
+                        <li class="room idc_add idc_list">
+                            <a href="#">机房管理 <span class="fa arrow"></span></a>
+                            <ul class="nav nav-third-level">
+                                <li class="idc_list"><a href="/assets/idc_list/">机房列表</a></li>
+                                <li class="idc_add"><a href="/assets/idc_add/">添加机房</a></li>
+                            </ul>
+                        </li>
+                        <li class="project service_add service_list">
+                            <a href="#">项目管理<span class="fa arrow"></span></a>
+                            <ul class="nav nav-third-level">
+                                <li><a href="/assets/server/type/list/" >项目列表</a></li>
+                                <li><a href="/assets/server/type/add/" >添加项目</a></li>
+                                <li class="service_add"><a href="/assets/service_add/" >添加服务</a></li>
+                                <li class="service_list"><a href="/assets/service_list/" >服务列表</a></li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                </li>
+            {% endif %}
+            {% if perms.account.access_ticket %}
+			    <li class="nav" id="ticket-menu">
+                <a href="#"><i class="fa fa-rebel"></i> <span class="nav-label">工单系统</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li>
+                        <a href="#">新建工单 <span class="fa arrow"></span></a>
+                        <ul class="nav nav-third-level">
+                            <li><a href="/ticket/release_apply/" >版本发布申请</a></li>
+                            <li><a href="/ticket/database_update_apply/" >数据库更新申请</a></li>
+                            <li><a href="/ticket/database_select_apply/" >数据库查询申请</a></li>
+                            <li><a href="/ticket/malfunction_apply/" >故障申报</a></li>
+                        </ul>
+                    </li>
+                    {% if perms.account.access_role_manage %}
+                        <li>
+                            <a href="/ticket/todo_worksheet">我的待办工单 <span class="fa arrow"></span></a>
+                        </li>
+                    {% endif %}
+                    <li>
+                        <a href="/ticket/create_worksheet">我创建的工单<span class="fa arrow"></span></a>
+                    </li>
+                    {% if perms.account.access_role_manage %}
+                        <li>
+                            <a href="/ticket/approval_worksheet">我审批的工单<span class="fa arrow"></span></a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </li>
+            {% endif %}
+
+                <li class="nav" id="user-menu">
+                <a href="#"><i class="fa fa-rebel"></i> <span class="nav-label">用户管理</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li>
+                        <a href="#">用户<span class="fa arrow"></span></a>
+                        <ul class="nav nav-third-level">
+                            <li><a href="/account/basic_info" >基本信息</a></li>
+                        </ul>
+                    </li>
+                    {% if perms.account.access_role_manage %}
+                        <li>
+                            <a href="#">用户组 <span class="fa arrow"></span></a>
+                            <ul class="nav nav-third-level">
+                                <li><a href="/account/create_group/" >新建用户组</a></li>
+                                <li><a href="/account/user_to_group/" >添加用户到组</a></li>
+                                <li><a href="/account/groupdeluser/" >组内删除用户</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#">权限管理<span class="fa arrow"></span></a>
+                            <ul class="nav nav-third-level">
+                                <li><a href="/account/create_user" >新建用户</a></li>
+                                <li><a href="/account/del_user" >删除用户</a></li>
+                                <li><a href="/account/del_group" >删除用户组</a></li>
+                                <li><a href="/account/permission_info" >权限信息</a></li>
+                            </ul>
+                        </li>
+                    {% endif %}
+                </ul>
+            </li>
+
+		</ul>
+    </div>
+</nav>
+<!-- 右侧菜单栏控制 -->
+<script type="text/javascript">
+    var str = document.location.pathname.split("/")[1];
+    var two = document.location.pathname.split("/")[2];
+    var three = document.location.pathname.split("/")[3];
+
+    if (str == "swan"){
+        $("." + str).addClass('active');
+    }
+
+    if (str == "salt"){
+        $(".assets").addClass('active');
+        $("." + str).addClass('active');
+    }
+     else if (str == "assets"  && three == "room"){
+        $("." + str).addClass('active');
+        $("." + three).addClass('active');
+     }
+     else if (str == "assets" && two == "server" && three == "type"){
+        $("." + str).addClass('active');
+        $(".project").addClass('active');
+     }
+     else if (str == "assets" && two == "server" && three == "host_without_business"){
+        $("." + str).addClass('active');
+        $(".project").addClass('active');
+     }
+      else if (str == "assets" && two == "product"){
+         $("." + str).addClass('active');
+         $(".project").addClass('active');
+      }
+     else if (str == "assets" && two == "server"){
+        $("." + str).addClass('active');
+        $("." + two).addClass('active');
+     }
+     else if (str == "conf" && two == "server"){
+        $("." + str).addClass('active');
+        $("." + two).addClass('active');
+     }
+     else if (two == "install" || two == "project"  && three == "add"){
+        $(".assets").addClass('active');
+        $("." + str).addClass('active');
+        $("." + two).addClass('active');
+     }
+     else {
+        try {
+             $("." + str).addClass('active');
+             $("." + two).addClass('active');
+        }
+        catch(err) {
+
+            }
+     }
+
+</script>

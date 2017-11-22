@@ -1,0 +1,78 @@
+{% extends 'default/base.html' %}
+{% load bootstrap %}
+{% block content %}
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>新建工单 | 数据库查询申请.</h2>
+    </div>
+    <div class="col-lg-2">
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-10">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5> 填写数据库查询申请详细信息 </h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="fa fa-wrench"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user"></ul>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="ibox-content">
+                    <form class="form-horizontal" action="" id="db_select_apply"  method="post" name="horizontal" role="form" autocomplete="off" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {% if emg %}
+                            <div class="alert alert-warning text-center">{{ emg }}</div>
+                        {% endif %}
+                        {% if smg %}
+                            <div class="alert alert-success text-center">{{ smg }}</div>
+                        {% endif %}
+                        <div>
+                            <span>工单号</span>
+                            <input name="stream_num" readonly="readonly" type="text" value="{{ stream_num }}">
+                        </div>
+                        <span>提单人</span>
+                        <input type="text"  name="user" value="{{ request.user }}" readonly="readonly" />
+                        <div class="hr-line-dashed"></div>
+                        {{ uf.work_title|bootstrap_horizontal }}
+                        <div class="hr-line-dashed"></div>
+                        {{ uf.project_name|bootstrap_horizontal }}
+                        <div class="hr-line-dashed"></div>
+                        {{ uf.version|bootstrap_horizontal }}
+                        <div class="hr-line-dashed"></div>
+                        <div class="input-append date form_datetime">
+                            <span>上线时间</span>
+                            <input size="16" type="text" value="" readonly  name="online_date" />
+                            <span class="add-on"><i class="icon-th"></i></span>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="input-append">
+                            <span>数据库脚本上传</span><input type="file" name="db_script" />
+                        </div>
+                        <div class="form-group">
+                               <div class="col-sm-4 col-sm-offset-5">
+                                   <button class="btn btn-primary" type="submit"> 提交 </button>
+                               </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(".form_datetime").datetimepicker({format: "yyyy-mm-dd hh:ii"
+    });
+</script>
+{% endblock content %}
