@@ -9,6 +9,6 @@ class AccessControl(models.Model):
         permissions = (
             ("access_cmdb",u'access_cmdb'),
             ("access_ticket", u'access_ticket'),
-            ("access_user_manage", u'access_user_manage'),
+            #("access_user_manage", u'access_user_manage'),
             ("access_role_manage", u'access_role_manage'),
         )

@@ -40,16 +40,28 @@
                         <div class="alert alert-success text-center">{{ smg }}</div>
                     {% endif %}
 
+                    {{ uf.node_name|bootstrap_horizontal }}
+
+                    <div class="hr-line-dashed"></div>
                     {{ uf.eth1|bootstrap_horizontal }}
-					
+
                     <div class="hr-line-dashed"></div>
                     {{ uf.internal_ip|bootstrap_horizontal }}
 
 					<div class="hr-line-dashed"></div>
                     {{ uf.remote_port|bootstrap_horizontal }}
 
+					<div class="hr-line-dashed"></div>
+                    {{ uf.cpu|bootstrap_horizontal }}
+
+					<div class="hr-line-dashed"></div>
+                    {{ uf.memory|bootstrap_horizontal }}
+
+					<div class="hr-line-dashed"></div>
+                    {{ uf.hard_disk|bootstrap_horizontal }}
+
                     <div class="hr-line-dashed"></div>
-                    
+
                     {{ uf.status|bootstrap_horizontal }}
 
                     <div class="hr-line-dashed"></div>
@@ -66,8 +78,14 @@
                     <div class="hr-line-dashed"></div>
                     {{ uf.host_application|bootstrap_horizontal }}
 
+                    <div class="hr-line-dashed"></div>
+                    {{ uf.system|bootstrap_horizontal }}
+
 {#                    <div class="hr-line-dashed"></div>#}
 {#                    {{ uf.vm|bootstrap_horizontal }}#}
+
+                    <div class="hr-line-dashed"></div>
+                    {{ uf.system_cpuarch|bootstrap_horizontal }}
 
                     <div class="hr-line-dashed"></div>
                     <div class="form-group">
@@ -126,16 +144,16 @@
                     <div class="hr-line-dashed"></div>
                     {{ uf.editor|bootstrap_horizontal }}
                     <div class="hr-line-dashed"></div>
-					
+
 					{{ uf.user_root|bootstrap_horizontal }}
                     <div class="hr-line-dashed"></div>
-					
+
 					{{ uf.user_weblogic|bootstrap_horizontal }}
                     <div class="hr-line-dashed"></div>
-					
+
 					{{ uf.user_bqadm|bootstrap_horizontal }}
                     <div class="hr-line-dashed"></div>
-					
+
 					{{ uf.user_deploy|bootstrap_horizontal }}
                     <div class="hr-line-dashed"></div>
 

@@ -16,7 +16,10 @@ from assets.models import Host, IDC, Service, Project
 class HostForm(forms.ModelForm):
     class Meta:
         model = Host
-        fields = ["node_name", "idc", "eth1", "internal_ip", "remote_port", "business", "service", "env", "status","cpu", "hard_disk", "memory", "system", "system_cpuarch", "vm", "host_application", "idle", "editor","user_root","user_weblogic","user_bqadm","user_deploy","user_wls81","user_oracle"]
+        fields = ["node_name", "idc", "eth1", "internal_ip", "remote_port", "business", "service", "env", "status","cpu",
+                  "hard_disk", "memory", "system", "system_cpuarch", "vm", "host_application",
+                  "idle", "editor","user_root","user_weblogic","user_bqadm","user_deploy","user_wls81","user_oracle","mac",
+                  "system_kernel", "cpu_info","mount_all"]
 
 class IdcForm(forms.ModelForm):
     class Meta:

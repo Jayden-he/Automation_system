@@ -8,10 +8,59 @@ from django.shortcuts import get_object_or_404
 from assets.models import Host, IDC, Service, Project, HostRecord
 from assets.models import SERVER_STATUS, Server_Type
 from new_api import pages
-import sys
-
+import sys,json,shlex,subprocess,os,re,ast
 reload(sys)
 sys.setdefaultencoding('utf-8')
+
+def server_info(uuid):
+    host = Host.objects.get(uuid=uuid)
+    ip = host.eth1
+    port = host.remote_port
+
+    file = open("/etc/ansible/hosts", 'a+')
+    a = file.read()
+    if re.search("%s:%s" % (ip, port), a):
+        pass
+    else:
+        file.write("%s:%s \n" % (ip, port))
+    file.close()
+    cmd = "/usr/bin/ansible %s -m setup" % ip
+    raw_info = subprocess.check_output(shlex.split(cmd))
+    base_info = json.loads(raw_info.split('=>')[1])['ansible_facts']
+    hostname = base_info['ansible_hostname']
+    ip = base_info['ansible_default_ipv4']["address"]
+    mac = base_info["ansible_default_ipv4"]['macaddress']
+    cpu = base_info['ansible_processor_vcpus']
+    memory = round(int(base_info['ansible_memtotal_mb'])/1024.0,1)
+    disk_info = base_info['ansible_devices']
+    disk_volume = sum([int(disk_info[disk]['sectors'])*int(disk_info[disk]['sectorsize']) for disk in disk_info])/1024**3
+    ansible_distribution = base_info["ansible_distribution"] + base_info["ansible_distribution_major_version"]
+    os_machine = base_info["ansible_machine"]
+    system_kernel = base_info["ansible_kernel"]
+    cpu_info = base_info["ansible_processor"]
+    mount_info = base_info["ansible_mounts"]
+    mount_all = {}
+    for i in range(len(mount_info)):
+        print i
+        mount_all["mount_info_%s" % i] = {"device": mount_info[i]["device"], "mount": mount_info[i]["mount"],
+                                          "size_total": mount_info[i]["size_total"], }
+
+    host.node_name = hostname
+    host.eth1 = ip
+    host.cpu = cpu
+    host.mac = mac
+    host.memory = memory
+    host.hard_disk = disk_volume
+    host.system_cpuarch = os_machine
+    host.system = ansible_distribution
+    host.system_kernel = system_kernel
+    host.cpu_info = cpu_info
+    host.mount_all = mount_all
+    host.save()
+
+
+    return hostname,ip,mac,cpu,memory,disk_volume,os_machine,ansible_distribution,system_kernel,cpu_info,mount_all
+
 
 
 def my_render(template, data, request):
@@ -54,8 +103,8 @@ def get_diff(obj1, obj2):
             info.pop(k)
     return info
 
-@login_required
-@permission_required('account.access_cmdb')
+#@login_required
+#@permission_required('account.access_cmdb')
 def db_to_record(username, host, info):
     text_list = []
     for k, v in info.items():
@@ -159,7 +208,10 @@ def host_add(request):
                 zw.type = 0
             zw.save()
             uf_post.save_m2m()
+            host = Host.objects.get(eth1=ip)
+            server_info(host.uuid)
             smg = u'主机%s添加成功!' % ip
+
             return render_to_response('assets/host_add.html', locals(), context_instance=RequestContext(request))
     return render_to_response('assets/host_add.html', locals(), context_instance=RequestContext(request))
 
@@ -199,8 +251,19 @@ def host_detail(request):
         host = get_object_or_404(Host, uuid=uuid)
     elif ip:
         host = get_object_or_404(Host, eth1=ip)
+    mount_info = ast.literal_eval(host.mount_all)
+    #return HttpResponse(host.mount_all)
+    #mount_info_json = json.loads(mount_info)
     host_record = HostRecord.objects.filter(host=host).order_by('-time')
     return render_to_response('assets/host_detail.html', locals(), context_instance=RequestContext(request))
+
+def host_update(request):
+    """主机硬件信息更新"""
+    uuid = request.GET.get('uuid','')
+
+    #hostname, ip, mac, cpu, memory, disk_volume, os_machine,ansible_distribution,system_kernel,cpu_info,mount_all = server_info(ip, port)
+    server_info(uuid)
+    return HttpResponseRedirect("/assets/host_list/")
 
 
 @login_required
@@ -218,12 +281,14 @@ def host_edit(request):
     service_host = host.service.all()
     services = [s for s in service_all if s not in service_host]
     username = request.user.username
+
     if request.method == 'POST':
         physics = request.POST.get('physics', '')
         uf_post = HostForm(request.POST, instance=host)
         if uf_post.is_valid():
             zw = uf_post.save(commit=False)
             request.POST = request.POST.copy()
+            # return HttpResponse(username)
             if physics:
                 #physics_host = get_object_or_404(Host, eth1=physics)
 				
@@ -245,7 +310,7 @@ def host_edit(request):
             db_to_record(username, host, info)
             return HttpResponseRedirect('/assets/host_detail/?uuid=%s' % uuid)
 
-    return render_to_response('assets/host_edit.html', locals(), context_instance=RequestContext(request))
+    return render(request,'assets/host_edit.html', locals())
 
 
 @login_required

@@ -46,6 +46,9 @@
                     <div class="hr-line-dashed"></div>
                     {{ uf.internal_ip|bootstrap_horizontal }}
 
+                     <div class="hr-line-dashed"></div>
+                    {{ uf.mac|bootstrap_horizontal }}
+
                     <div class="hr-line-dashed"></div>
                     {{ uf.cpu|bootstrap_horizontal }}
 
@@ -77,6 +80,15 @@
 
                     <div class="hr-line-dashed"></div>
                     {{ uf.system_cpuarch|bootstrap_horizontal }}
+
+                    <div class="hr-line-dashed"></div>
+                    {{ uf.cpu_info|bootstrap_horizontal }}
+
+                    <div class="hr-line-dashed"></div>
+                    {{ uf.mount_all|bootstrap_horizontal }}
+
+                    <div class="hr-line-dashed"></div>
+                    {{ uf.system_kernel|bootstrap_horizontal }}
 
                     <div class="hr-line-dashed"></div>
                     <div class="form-group">

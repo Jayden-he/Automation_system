@@ -6,36 +6,43 @@ from assets.models import Project
 from forms import WorkSheetForm
 from django.contrib.auth.decorators import login_required,permission_required
 import time,os, sys
-import smtplib
+import smtplib,string
 from email.mime.text import MIMEText
 from email.header import Header
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
 upload = '/data/cmdb_v4/upload/'
-#user = u'jayden'
-#approval_user = u'zhihui'
 
-#receiver = "zhihui.he@bqrzzl.com"
-#subject = u"test python"
-#text = u"this is python test email"
-def SendEmail(receiver,subject,text):
+def SendEmail(text):
     HOST = "smtp.exmail.qq.com"
     username = 'zhihui.he@bqrzzl.com'
     password = 'Qq346593733.'
-    sender = "zhihui.he@bqrzzl.com"
-    msg = MIMEText(text, 'utf-8')
-    #msg['Subject'] = Header(subject, 'utf-8')
+    FROM = "zhihui.he@bqrzzl.com"
+    TO = ["zhihui.he@bqrzzl.com","zhiqun.yang@bqrzzl.com"]
+    SUBJECT = u'审批邮件'
+    #text = u'待审批'
+    #BODY = string.join((
+    #    "From: %s" % FROM,
+    #    "To: %s" % TO,
+    #    "Subject: %s" % SUBJECT,
+    #    "",
+    #    text
+    #), "\r\n")
+    msg = MIMEText("""
+        %s
+    """ % text,'text', 'utf-8')
+    msg['Subject'] = SUBJECT
     # 中文需参数‘utf-8’，单字节字符不需要
-    msg['Subject'] = subject
-    msg['From'] = sender
-    msg['To'] = receiver
+    msg['From'] = FROM
+    msg['To'] = ','.join(TO)
 
     # 连接SMTP服务器，然后发送信息
     smtp = smtplib.SMTP()
     smtp.connect(HOST)
     smtp.login(username, password)
-    smtp.sendmail(sender, receiver, msg.as_string())
+    #smtp.sendmail(FROM, [TO], BODY)
+    smtp.sendmail(FROM, TO, msg.as_string())
     smtp.quit()
 
 def uploadfile(srcpath, descpath):
@@ -135,6 +142,8 @@ def database_update_apply(request):
             initial.type = u'数据库更新'
             initial.save()
             smg = u'提交脚本申请成功'
+            text = u"有一个数据库更新的申请"
+            SendEmail(text)
             return render(request,'ticket/database_update_apply.html', locals())
 
     return render(request,'ticket/database_update_apply.html', locals())
